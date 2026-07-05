@@ -82,6 +82,15 @@
 //     make sure the match timer is under 30 minutes before
 //     starting the script, otherwise the force exfil may
 //     activate before the auto save quit.
+//   - The auto save quit feature uses your Tactical equipment
+//     to throw a Monkey Bomb before quitting to attract zombies
+//     away from you and allow health to recover before the menu
+//     is opened. Monkey Bomb MUST be equipped as your Tactical
+//     for the auto save quit to work correctly. If you are not
+//     using Monkey Bomb, disable the SnQ combo by setting the
+//     session timer threshold to a value you will never reach,
+//     or simply ignore the auto save quit and monitor the game
+//     manually before the 6 hour mark.
 //
 // ============================================================
 // IN-GAME SETTINGS:
@@ -200,8 +209,10 @@ init {
 
 int auto_timer = 0;
 int semi_timer = 0;
+int session_timer = 0;
 int start = FALSE;
 int gun_mode = 0;
+int snq_triggered = FALSE;
 
 main {
     if (!start && get_val(XB1_LT) && event_press(XB1_RIGHT)) {
@@ -213,6 +224,8 @@ main {
         start = !start;
         auto_timer = 0;
         semi_timer = 0;
+        session_timer = 0;
+        snq_triggered = FALSE;
         draw_oled();
     }
 
@@ -222,7 +235,25 @@ main {
         f_ColorLed(0, 2, 0, 0);
     }
 
-    if (start) {
+    // Session timer - increments every tick while script is running
+    if (start && !snq_triggered) {
+        session_timer += get_rtime();
+    }
+
+    // Auto save quit at 5 hours 30 minutes (19800000ms)
+    if (start && !snq_triggered && session_timer >= 19800000) {
+        snq_triggered = TRUE;
+        combo_stop(Auto);
+        combo_stop(Semi);
+        combo_stop(Melee);
+        combo_stop(Ads);
+        combo_stop(Ult);
+        combo_stop(Horizontal);
+        combo_stop(Movement);
+        combo_run(SnQ);
+    }
+
+    if (start && !snq_triggered) {
         if (gun_mode == 0) {
             auto_timer += get_rtime();
             combo_run(Auto);
@@ -247,7 +278,7 @@ main {
             combo_run(Ult);
             combo_run(Movement);
         }
-    } else {
+    } else if (!start) {
         combo_stop(Auto);
         combo_stop(Semi);
         combo_stop(Melee);
@@ -257,6 +288,8 @@ main {
         combo_stop(Movement);
         auto_timer = 0;
         semi_timer = 0;
+        session_timer = 0;
+        snq_triggered = FALSE;
     }
 }
 
@@ -341,4 +374,19 @@ combo Horizontal {
 combo Movement {
     set_val(XB1_LY, 100);   // Constantly hold backwards to ensure you are in the corner
     set_val(XB1_LX, 30);    // Constantly hold right to ensure you are still in the corner
+}
+
+combo SnQ {
+    set_val(TACTICAL, 100); wait(100);  // Throw monkey bomb to attract zombies
+    set_val(TACTICAL, 0);   wait(9500); // Wait for zombies to be attracted and health to recover
+    set_val(XB1_MENU, 100); wait(100);  // Open pause menu
+    set_val(XB1_MENU, 0);   wait(750);  // Wait for menu to open
+    set_val(XB1_UP, 100);   wait(100);  // Navigate up to save quit option
+    set_val(XB1_UP, 0);     wait(200);  // 
+    set_val(XB1_A, 100);    wait(100);  // Select save quit option
+    set_val(XB1_A, 0);      wait(300);  //
+    set_val(XB1_UP, 100);   wait(100);  // Navigate up to confirm
+    set_val(XB1_UP, 0);     wait(200);  //
+    set_val(XB1_A, 100);    wait(100);  // Confirm save quit
+    set_val(XB1_A, 0);      
 }
