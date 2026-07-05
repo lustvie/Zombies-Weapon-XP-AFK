@@ -92,7 +92,7 @@
 //     or simply ignore the auto save quit and monitor the game
 //     manually before the 6 hour mark.
 //
-// ============================================================
+// ============================================================ 
 // IN-GAME SETTINGS:
 //
 //   Controller:
@@ -269,7 +269,7 @@ main {
             combo_run(Semi);
             combo_run(Horizontal);
             combo_run(Movement);
-            if (semi_timer >= 1930) {
+            if (semi_timer >= 2100) {  //1930 //2100
                 combo_stop(Semi);
                 semi_timer = 0;
             }
@@ -318,14 +318,27 @@ combo Semi {
     set_val(AIM, 0); 		wait(50);   // 50ms of no input                 //      Short taps of the ADS Button for tighter hip accuracy     //
     set_val(AIM, 100);  	wait(50);   // ADS Hold time                    //          to finish the melee animation which is 1100ms         //
     set_val(AIM, 0); 		wait(50);   // 50ms of no input                 //                                                                //
-	set_val(AIM, 100);	    wait(50);   // Short ADS Hold time              //================================================================//
+	set_val(AIM, 100);      wait(275);  // Short ADS Hold time              //================================================================//
     combo_run(Ult);                     // Start the Ult(Field Upgrade) combo
-	set_val(FIRE, 100);     set_val(AIM, 100);      wait(110);  // Press fire button + Persist ADS is held at the same time for 110ns
-    set_val(FIRE, 0);       set_val(AIM, 0);        wait(370);  // Stop weapon fire + Stop ADS and wait 370ms
+	set_val(FIRE, 100); set_val(AIM, 100);  wait(125);  // Press fire button + Persist ADS is held at the same time for 125ns
+	set_val(FIRE, 0);   set_val(AIM, 0);    wait(400);  // Stop weapon fire + Stop ADS and wait 400ms
     combo_stop(Ult);                    // Ensure the Ult(Field Upgrade) combo has stopped
 	set_val(MELEE, 100);	wait(100);  // Melee input 
 	set_val(MELEE, 0);		wait(400);  // Stops Melee input and short 200ms wait time before camera looks down 
 }
+
+
+//	set_val(AIM, 100);	    wait(50);   // Short ADS Hold time              //================================================================//
+//  combo_run(Ult);                     // Start the Ult(Field Upgrade) combo
+//	set_val(FIRE, 100);     set_val(AIM, 100);      wait(110);  // Press fire button + Persist ADS is held at the same time for 110ns
+//  set_val(FIRE, 0);       set_val(AIM, 0);        wait(370);  // Stop weapon fire + Stop ADS and wait 370ms
+//  combo_stop(Ult);                    // Ensure the Ult(Field Upgrade) combo has stopped
+
+
+//	set_val(AIM, 100);  wait(275);
+//	set_val(FIRE, 100); set_val(AIM, 100);  wait(125);
+//	set_val(FIRE, 0);   set_val(AIM, 0);    wait(400);
+
 
 combo Melee {
     set_val(MELEE, 100);    wait(100);  // Melee input
