@@ -84,6 +84,8 @@ is activated automatically each loop.
 > ⚠️ **DO NOT** start the script prone. Deadshot can snap too far 
 > left causing you to die. **Crouched only.**
 
+- Not every weapon has been tested. If you find a weapon that
+  does not work or have any issues please let me know.
 - If your weapon is creating crawlers, monitor the game until 
   you can upgrade to a point where it stops. Crawlers that get 
   too close can hit you but the melee perk cannot reach them.
