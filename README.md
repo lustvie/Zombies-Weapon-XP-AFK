@@ -11,7 +11,7 @@ is activated automatically each loop.
 | Mode  | Weapons |
 |-------|---------|
 | AUTO  | Automatic weapons, bursts, auto pistols |
-| SEMI  | Semi-auto, snipers, marksman, semi pistols |
+| SEMI  | Semi-auto, snipers, marksman, semi pistols, Launchers |
 | MELEE | Melee weapons |
 
 **Cycle modes:** Hold LT + Press DPAD RIGHT (script must be off)  
@@ -98,4 +98,4 @@ is activated automatically each loop.
 
 ## Contact
 Discord: **fraiey**  
-Free to use — no cost, no strings.
+Free to use — Open to edit.
